@@ -33,6 +33,7 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+
 		jshint: {
 			options: {
 				jshintrc: '.jshintrc'

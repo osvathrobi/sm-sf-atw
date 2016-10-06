@@ -4,6 +4,7 @@ var Ship = {
 	rotZ: 0,
 	targetPos: '',
 	isLoaded: false,
+	time: 0,
 
 	init: function(scene) {
 
@@ -40,11 +41,11 @@ var Ship = {
 			return;
 		}
 
-		time += 0.22;
+		Ship.time += 0.22;
 
 		// moveTo
 
-		if (isDragging) {
+		if (Device.isDragging) {
 
 			if (Math.abs(Ship.targetPos.x - Ship.ship.position.x) > 2.0) {
 				if (Ship.targetPos.x < Ship.ship.position.x) {
@@ -68,7 +69,7 @@ var Ship = {
 		}
 
 		// move
-		Ship.prop.rotation.set(0.0, 0.0, -Ship.rotZ + (-1 * time * 2));
+		Ship.prop.rotation.set(0.0, 0.0, -Ship.rotZ + (-1 * Ship.time * 2));
 
 		Ship.ship.rotation.set(0.0, 0.0, Ship.rotZ);
 
