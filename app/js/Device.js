@@ -1,7 +1,8 @@
 var Device = {
 	isDragging: false,
+	onAnimate: '',
 
-	init: function() {
+	init: function(onSuccess, onAnimate) {
 		var container, stats;
 
 		var camera, scene, renderer;
@@ -27,10 +28,9 @@ var Device = {
 
 		var clock = new THREE.Clock();
 
-		init();
-		animate();
+		localInit(onSuccess, onAnimate);
 
-		function init() {
+		function localInit(onSuccess, onAnimate) {
 
 			container = document.createElement('div');
 			document.body.appendChild(container);
@@ -49,8 +49,6 @@ var Device = {
 			scene = new THREE.Scene();
 			projector = new THREE.Projector();
 			scene.fog = new THREE.Fog(0x000000, 100, 4000);
-
-			Ship.init(scene);
 
 			var ambient = new THREE.AmbientLight(0xffffff);
 			scene.add(ambient);
@@ -89,8 +87,13 @@ var Device = {
 
 			//window.addEventListener( 'click', onWindowClick, false );
 
-			Input.init();
+			// start
+			Device.onAnimate = onAnimate;
+			animate();
 
+			if (onSuccess) {
+				onSuccess(scene);
+			}
 		}
 
 		function onWindowStartDrag() {
@@ -149,10 +152,7 @@ var Device = {
 
 			requestAnimationFrame(animate);
 
-			Input.update();
-
-			Ship.updateBeforeRender();
-
+			Device.onAnimate();
 
 			render();
 			stats.update();
@@ -163,7 +163,6 @@ var Device = {
 
 		function render() {
 			time += 0.02;
-
 
 			renderer.render(scene, camera);
 		}
